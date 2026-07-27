@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpenPDS Engineering Decision Record",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "status",
+    "problem",
+    "decision",
+    "evidence_class"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^EDR-[0-9]{3,}$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "accepted",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "problem": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string"
+    },
+    "evidence_class": {
+      "enum": [
+        "V",
+        "M",
+        "Q",
+        "C",
+        "E",
+        "A",
+        "H",
+        "U"
+      ]
+    }
+  }
+}
