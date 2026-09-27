@@ -1,5 +1,9 @@
 # OpenPDS
 
+[![CI](https://github.com/Monotoba/openpds/actions/workflows/ci.yml/badge.svg)](https://github.com/Monotoba/openpds/actions/workflows/ci.yml)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](pyproject.toml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 OpenPDS is an offline-first, tool-agnostic product-development standard and
 automation toolkit for engineering, manufacturing, verification, business
 planning, documentation, and product release.
@@ -21,12 +25,14 @@ This repository is a starter implementation. It includes:
 
 ```bash
 chmod +x setup.sh run.sh test.sh
-./setup.sh
+OPENPDS_SKIP_GITHUB=1 ./setup.sh
 ./run.sh --help
 ./test.sh
 ```
 
-By default, `setup.sh` creates a **private** GitHub repository named
+`setup.sh` installs dependencies, runs checks, and creates a local Git commit when
+there are changes. The command above skips GitHub creation and pushing. Without
+`OPENPDS_SKIP_GITHUB=1`, `setup.sh` creates a **private** GitHub repository named
 `openpds` under the account `Monotoba`, if the GitHub CLI is installed and
 authenticated.
 
