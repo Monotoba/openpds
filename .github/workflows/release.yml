@@ -23,10 +23,10 @@ jobs:
         run: uv sync --extra dev
 
       - name: Build Python package
-        run: uv run python -m build
+        run: uv run --no-sync python -m build
 
       - name: Build OpenPDS documentation release
-        run: uv run openpds release "${GITHUB_REF_NAME#v}"
+        run: uv run --no-sync openpds release "${GITHUB_REF_NAME#v}"
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
