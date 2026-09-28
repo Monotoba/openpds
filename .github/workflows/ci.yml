@@ -43,20 +43,23 @@ jobs:
       - name: Check distribution build
         run: |
           uv run --no-sync --python ${{ matrix.python-version }} python -m build
-          uv run --no-sync --python ${{ matrix.python-version }} openpds release 0.1.2
-          python - <<'PY'
+          VERSION="$(uv run --no-sync --python ${{ matrix.python-version }} python -c 'from importlib.metadata import version; print(version("openpds"))')"
+          uv run --no-sync --python ${{ matrix.python-version }} openpds release "$VERSION"
+          OPENPDS_RELEASE_VERSION="$VERSION" python - <<'PY'
           import json
+          import os
           from hashlib import sha256
           from pathlib import Path
           from zipfile import ZipFile
 
-          archive = Path('release/openpds-0.1.2.zip')
+          version = os.environ['OPENPDS_RELEASE_VERSION']
+          archive = Path(f'release/openpds-{version}.zip')
           assert archive.is_file()
           assert sha256(archive.read_bytes()).hexdigest() == json.loads(
-              Path('release/openpds-0.1.2-SHA256.json').read_text()
+              Path(f'release/openpds-{version}-SHA256.json').read_text()
           )[archive.name]
           with ZipFile(archive) as bundle:
               assert bundle.testzip() is None
               assert any(name.endswith('/MANIFEST.json') for name in bundle.namelist())
-          assert list(Path('dist').glob('*.whl'))
+          assert list(Path('dist').glob(f'openpds-{version}-*.whl'))
           PY

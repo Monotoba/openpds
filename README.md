@@ -58,7 +58,7 @@ OPENPDS_GITHUB_VISIBILITY=public \
 ./run.sh init-project diode-tester --title "Portable Diode Tester"
 ./run.sh verify diode-tester
 ./run.sh build docs
-./run.sh release 0.1.2
+./run.sh release 0.1.3a1
 ```
 
 `verify` currently checks the project directory structure, manifest's required

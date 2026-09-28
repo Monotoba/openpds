@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openpds"
-version = "0.1.2"
+version = "0.1.3a1"
 description = "Offline-first product development standard and automation toolkit"
 readme = "README.md"
 requires-python = ">=3.11"

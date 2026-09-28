@@ -4,6 +4,8 @@ All notable changes to OpenPDS will be documented here.
 
 ## [Unreleased]
 
+## [0.1.3a1] - 2026-09-27
+
 ### Fixed
 - Local setup no longer commits or publishes to GitHub unless explicitly requested.
 - Documentation builds refuse to replace directories they did not generate or overlap their source.

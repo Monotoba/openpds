@@ -22,6 +22,11 @@ jobs:
       - name: Install dependencies
         run: uv sync --extra dev
 
+      - name: Verify tag matches package version
+        run: |
+          VERSION="$(uv run --no-sync python -c 'from importlib.metadata import version; print(version("openpds"))')"
+          test "$VERSION" = "${GITHUB_REF_NAME#v}"
+
       - name: Build Python package
         run: uv run --no-sync python -m build
 
@@ -29,9 +34,11 @@ jobs:
         run: uv run --no-sync openpds release "${GITHUB_REF_NAME#v}"
 
       - name: Create GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
+          prerelease: ${{ contains(github.ref_name, 'a') || contains(github.ref_name, 'b') || contains(github.ref_name, 'rc') }}
+          fail_on_unmatched_files: true
           files: |
             dist/*
             release/*.zip

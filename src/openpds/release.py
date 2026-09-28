@@ -11,7 +11,7 @@ from .project import write_manifest
 
 VERSION_RE = re.compile(
     r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
-    r"(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+    r"(?:(?:a|b|rc)[1-9][0-9]*|-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
 )
 
 
@@ -25,7 +25,7 @@ def _sha256(path: Path) -> str:
 
 def create_release(repository: Path, version: str) -> Path:
     if not VERSION_RE.fullmatch(version):
-        raise ValueError("Version must be a semantic version such as 0.1.2 or 0.1.2-alpha.1.")
+        raise ValueError("Version must be a release version such as 0.1.3a1 or 0.1.3.")
 
     release_dir = repository / "release" / f"openpds-{version}"
     if release_dir.exists():

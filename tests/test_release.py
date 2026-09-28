@@ -26,7 +26,7 @@ def test_invalid_version_does_not_touch_other_files(tmp_path: Path, version: str
     sentinel.mkdir()
     (sentinel / "important.txt").write_text("keep", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="semantic version"):
+    with pytest.raises(ValueError, match="release version"):
         create_release(tmp_path, version)
 
     assert (sentinel / "important.txt").read_text(encoding="utf-8") == "keep"
@@ -45,8 +45,8 @@ def test_release_refuses_to_replace_unmanaged_directory(tmp_path: Path) -> None:
 
 def test_release_can_rebuild_its_own_directory(tmp_path: Path) -> None:
     (tmp_path / "README.md").write_text("# Test\n", encoding="utf-8")
-    first = create_release(tmp_path, "0.1.2-alpha.1")
-    second = create_release(tmp_path, "0.1.2-alpha.1")
+    first = create_release(tmp_path, "0.1.3a1")
+    second = create_release(tmp_path, "0.1.3a1")
     assert first == second
     with ZipFile(second) as bundle:
         assert bundle.testzip() is None
