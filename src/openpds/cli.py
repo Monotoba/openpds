@@ -79,6 +79,10 @@ def build(
 def release(
     version: Annotated[str, typer.Argument(help="Semantic release version.")],
 ) -> None:
-    """Create a versioned ZIP release and SHA-256 checksum file."""
-    archive = create_release(Path.cwd(), version)
+    """Create a versioned documentation ZIP and SHA-256 checksum file."""
+    try:
+        archive = create_release(Path.cwd(), version)
+    except (ValueError, FileExistsError) as exc:
+        console.print(f"[red]Error:[/red] {exc}")
+        raise typer.Exit(2) from exc
     console.print(f"[green]Created release:[/green] {archive}")

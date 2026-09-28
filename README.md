@@ -8,7 +8,7 @@ OpenPDS is an offline-first, tool-agnostic product-development standard and
 automation toolkit for engineering, manufacturing, verification, business
 planning, documentation, and product release.
 
-This repository is a starter implementation. It includes:
+This repository is an early starter implementation. It includes:
 
 - a Python CLI
 - project scaffolding
@@ -23,42 +23,51 @@ This repository is a starter implementation. It includes:
 
 ## Quick start
 
+Requires Python 3.11 or newer and [uv](https://docs.astral.sh/uv/). The setup
+script can install uv if it is missing.
+
 ```bash
-chmod +x setup.sh run.sh test.sh
-OPENPDS_SKIP_GITHUB=1 ./setup.sh
+./setup.sh
 ./run.sh --help
 ./test.sh
 ```
 
-`setup.sh` installs dependencies, runs checks, and creates a local Git commit when
-there are changes. The command above skips GitHub creation and pushing. Without
-`OPENPDS_SKIP_GITHUB=1`, `setup.sh` creates a **private** GitHub repository named
-`openpds` under the account `Monotoba`, if the GitHub CLI is installed and
-authenticated.
-
-Override defaults as needed:
+By default, `setup.sh` installs dependencies and runs checks locally. It does
+not initialize Git, commit, create a repository, or push. To explicitly create
+or push a **private** repository under your authenticated GitHub account, run:
 
 ```bash
-OPENPDS_GITHUB_OWNER=Monotoba \
-OPENPDS_GITHUB_REPO=openpds \
-OPENPDS_GITHUB_VISIBILITY=public \
-./setup.sh
+OPENPDS_SKIP_GITHUB=0 ./setup.sh
 ```
 
-To skip GitHub setup:
+This publishing option requires the GitHub CLI, authenticated SSH access, and
+a clean Git working tree. It preserves an existing `origin` that points to
+another repository. Override the target or visibility only when intended:
 
 ```bash
-OPENPDS_SKIP_GITHUB=1 ./setup.sh
+OPENPDS_SKIP_GITHUB=0 \
+OPENPDS_GITHUB_OWNER=your-account \
+OPENPDS_GITHUB_REPO=your-project \
+OPENPDS_GITHUB_VISIBILITY=public \
+./setup.sh
 ```
 
 ## CLI examples
 
 ```bash
 ./run.sh init-project diode-tester --title "Portable Diode Tester"
-./run.sh verify examples/diode-tester
+./run.sh verify diode-tester
 ./run.sh build docs
-./run.sh release 0.1.0
+./run.sh release 0.1.2
 ```
+
+`verify` currently checks the project directory structure, manifest's required
+fields, and presence of the requirements CSV. It does not yet validate the
+engineering content or certify a product. `build` copies Markdown into the
+generated `site/` directory; it refuses to replace an existing directory that
+it did not create. `release` creates a documentation and templates ZIP with a
+SHA-256 file in `release/`. The Python wheel is built separately by the release
+workflow. These are early tools, not a complete product-development standard.
 
 ## Design principles
 

@@ -2,11 +2,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from .project import write_manifest
+
+VERSION_RE = re.compile(
+    r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)"
+    r"(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$"
+)
 
 
 def _sha256(path: Path) -> str:
@@ -18,8 +24,13 @@ def _sha256(path: Path) -> str:
 
 
 def create_release(repository: Path, version: str) -> Path:
+    if not VERSION_RE.fullmatch(version):
+        raise ValueError("Version must be a semantic version such as 0.1.2 or 0.1.2-alpha.1.")
+
     release_dir = repository / "release" / f"openpds-{version}"
     if release_dir.exists():
+        if not (release_dir / "MANIFEST.json").is_file():
+            raise FileExistsError(f"{release_dir} exists but is not a prior OpenPDS release.")
         shutil.rmtree(release_dir)
     release_dir.mkdir(parents=True)
 

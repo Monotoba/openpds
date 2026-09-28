@@ -4,6 +4,16 @@ All notable changes to OpenPDS will be documented here.
 
 ## [Unreleased]
 
+### Fixed
+- Local setup no longer commits or publishes to GitHub unless explicitly requested.
+- Documentation builds refuse to replace directories they did not generate or overlap their source.
+- Release versions must be safe semantic versions, and existing non-release directories are preserved.
+- Corrected the first-run example and clarified the current scope of structural verification.
+
+### Added
+- Regression tests for setup defaults, output directory safety, and release version safety.
+- CI checks the Python wheel, documentation ZIP, and SHA-256 file before tagging a release.
+
 ## [0.1.2] - 2026-07-27
 
 ### Fixed
